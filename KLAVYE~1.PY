@@ -1,0 +1,13 @@
+print("Programa Hoşgeldiniz...")
+
+sayi=list()
+x=int(input("1.Sayıyı Giriniz: "))
+y=int(input("2. Sayıyı Giriniz: "))
+z=int(input("3. Sayıyı Giriniz: "))
+sayi.append(x)
+sayi.append(y)
+sayi.append(z)
+sayi.sort()
+print(sayi)
+print("En Büyük Sayıyla Ortanca Sayının Arasındaki Fark: ",sayi[2]-sayi[1])
+print("Ortanca Sayıyla En Küçük Sayı Arasındaki Fark: ",sayi[1]-sayi[0])
