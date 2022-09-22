@@ -13,6 +13,6 @@ while 1:
     cv2.imshow("QR Code Reader",img)
     if cv2.waitKey(1)==ord('q'):
         break
-b=webbrowser.open(str(link))
+b=webbrowser.open(str(link),new=1)
 çap.release(link)
 cv2.destroyAllWindows()
