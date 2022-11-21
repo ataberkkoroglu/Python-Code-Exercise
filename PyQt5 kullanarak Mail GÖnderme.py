@@ -313,7 +313,7 @@ class Pencere(QMainWindow):
             self.yazı_alanı.clear()
             self.subject.clear()
             self.kime.clear()
-            self.kim.clear()
+            
         elif sender.text()=="Open":
             dosya_ismi= QFileDialog.getOpenFileName(self,"Open File",os.getenv("Desktop"))
             with open(dosya_ismi[0],"r+") as file:
