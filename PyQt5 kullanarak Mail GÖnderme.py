@@ -1,42 +1,56 @@
 from datetime import datetime
-import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import sys
 from PyQt5.QtWidgets import QWidget,QMainWindow,QPushButton,QTextEdit,QLineEdit,QLabel,QHBoxLayout,QVBoxLayout,QAction,QApplication,QFileDialog,QCheckBox,qApp
 from PyQt5 import QtGui
-import time,os
+import time,os,sqlite3,sys,smtplib
+
 class Pencere(QMainWindow):
     a=0
     def __init__(self):
         super().__init__()
+        self.Sql()
         self.giris()
-        self.init_ui()    
-    def init_ui(self):     
+        self.init_ui()  
+    
+    def Sql(self):
+        con=sqlite3.connect("user.db")
+        cursor=con.cursor()
+        cursor.execute("Create Table If Not Exists User(Username TEXT,Password TEXT)")
+        con.commit()
+        cursor.execute("Select * From User")
+        result=cursor.fetchall()
+        if result==None:
+            
+         cursor.execute("Insert Into User Values (?,?)",("ak862@gmail.com","12345"))
+         con.commit()  
+        con.close()    
+        
+    def init_ui(self): 
         self.pencere=QWidget()
-        self.pencere.setWindowTitle("Mail Gönderme")
-        self.kim=QLineEdit()
-        self.kim2=QLabel("Gönderici")
+        self.pencere.setWindowTitle("Send Email")
+        self.back=QPushButton("<")
         self.kime=QLineEdit()
         menubar=self.menuBar()
-        self.exit=menubar.addMenu("Çıkış")
+        self.exit=menubar.addMenu("Exit")
         self.cıkıs_yap=QAction(self.exit)
         self.cıkıs_yap.setShortcut("Ctrl+Q")
         self.exit.addAction(self.cıkıs_yap)
-        self.kime2=QLabel("Alıcı")
+        self.kime2=QLabel("Receiver")
         self.subject=QLineEdit()
-        self.subject2=QLabel("Konu:")
+        self.subject2=QLabel("Subject:")
         self.now=datetime.now()
-        self.time=QLabel(str(datetime.strftime(self.now,format("TARİH:%d/%m/%Y SAAT: %H.%M.%S"))))
+        self.time=QLabel(str(datetime.strftime(self.now,format("Date:%d/%m/%Y Clock: %H.%M.%S"))))
+        self.time.setFont(QtGui.QFont("Arial",20,10,True))
         self.yazı_alanı=QTextEdit()
         self.yazı_alanı2=QLabel("Mail")
-        self.buton=QPushButton("Gönder")
-        self.buton2=QPushButton("Taslak Olarak Kaydet")
-        self.buton3=QPushButton("Sil")
+        self.buton=QPushButton("Send")
+        self.buton2=QPushButton("Save As Draft")
+        self.buton3=QPushButton("Delete")
         self.buton3.setShortcut("Ctrl+D")
         self.buton.setShortcut("Ctrl+M")
         self.buton2.setShortcut("Ctrl+S")
-        self.buton5=QPushButton("Aç")
+        self.buton5=QPushButton("Open")
         self.buton5.setShortcut("Ctrl+O")
         font=QtGui.QFont()
         font.setFamily("Arial")
@@ -45,9 +59,8 @@ class Pencere(QMainWindow):
         self.yazı=QLabel()
         v_box=QVBoxLayout()
         h_box=QHBoxLayout()
+        v_box.addWidget(self.back)
         v_box.addWidget(self.time)
-        v_box.addWidget(self.kim2)
-        v_box.addWidget(self.kim)
         v_box.addWidget(self.kime2)
         v_box.addWidget(self.kime)
         v_box.addWidget(self.subject2)
@@ -62,25 +75,29 @@ class Pencere(QMainWindow):
         v_box.addLayout(h_box)
         self.pencere.setLayout(v_box)
         self.pencere.setMinimumSize(250,250)
+        self.back.clicked.connect(self.giris3)
         self.buton.clicked.connect(self.response)
         self.buton2.clicked.connect(self.response)
         self.buton3.clicked.connect(self.response)
         self.buton5.clicked.connect(self.response)
         #self.pencere.show()
+        
     def giris(self):
+         #self.pencere3.close()
          self.pencere2=QWidget()
          self.pencere2.setWindowTitle("Gmail")
-         self.kullanıcı_adı=QLabel("Kullanıcı Adınız")
-         self.kullanıcı_sifresi=QLabel("Kullanıcı Şifresi")
-         self.remember=QCheckBox("Beni Hatırla")
+         self.text2=QLabel()
+         self.kullanıcı_adı=QLabel("Your Username")
+         self.kullanıcı_sifresi=QLabel("Your Password")
+         self.remember=QCheckBox("Remember Me")
          self.password=(QLineEdit())
          self.password.setEchoMode(QLineEdit.Password)
          self.kullanıcı_adı2=QLineEdit()
          self.etiket2=QLabel()
          self.etiket2.setPixmap(QtGui.QPixmap("Gmail2.jpg"))
-         self.buton4=QPushButton("Giriş Yap")
+         self.buton4=QPushButton("Login")
          self.buton4.setShortcut("Ctrl+M")
-         self_unutma=QPushButton("Şifreyi Unuttunuz Mu?")
+         self_unutma=QPushButton("Did You Forget Your Password?")
          v_box=QVBoxLayout()
          h_box=QHBoxLayout()
          v_box.addStretch()
@@ -92,6 +109,7 @@ class Pencere(QMainWindow):
          v_box.addWidget(self.remember)
          v_box.addWidget(self.buton4)
          v_box.addWidget(self_unutma)
+         v_box.addWidget(self.text2)
          v_box.addStretch()
          h_box.addStretch()
          h_box.addLayout(v_box)
@@ -101,63 +119,169 @@ class Pencere(QMainWindow):
          self.buton4.clicked.connect(self.check)
          self_unutma.clicked.connect(self.windows)
          self.pencere2.show()
-    def check(self,x):
+         
+    def check(self):
         sender=self.pencere2.sender()
-        self.parola="2606Atam"
-        self.ad="ataberkkoroglu02@gmail.com"
-        if sender.text()=="Giriş Yap":
-           #if str(self.kullanıcı_adı2)==self.ad and str(self.password)==self.parola:
+        if sender.text()=="Login":
+           con=sqlite3.connect("user.db")
+           cursor=con.cursor()
+           cursor.execute("Select * From User Where Username=? and Password=? ",(self.kullanıcı_adı2.text(),self.password.text()))
+           result=cursor.fetchone()
+           con.close()
+           if result!=None:
                 time.sleep(1)
                 self.pencere2.close()
                 self.init_ui()
-                self.pencere.show()
-                if self.remember.isChecked():
-                    pass             
-        elif sender.text()=="Şifreyi Unuttunuz Mu?":
-         if(not str(self.password))in x.items:
+                self.pencere.show() 
+           else:
+               self.text2.setText("Wrong Password or Username...")
+               self.password.clear()
+               self.kullanıcı_adı2.clear()     
+        elif sender.text()=="Did You Forget Your Password?":
            self.windows()
-           self.parola.__dir__()
+               
         elif sender.text()=="Kaydet":
-             self.parola=self.yeni_sifre2
-             
-             print("Kaydedildi")
-             self.pencere3.close()
-             self.giris()
+             con=sqlite3.connect("user.db")
+             cursor=con.cursor()
+             cursor.execute("Select * From User Where Username=? ",(self.username.text(),))
+             result2=cursor.fetchone()
+             if (result2!=None):
+               cursor.execute("Update User set Password=? Where Username=? ",(self.yeni_sifre2.text(),self.username.text()))
+               con.commit()
+               self.text2.setText("Your Process Could Realized Successfully.")
+               self.pencere3.close()
+               self.giris()
+             else:
+                 self.username.clear()
+                 self.yeni_sifre2.clear()
+                 self.text.setText("Not Be Saved")
+                 
         elif sender.text()=="Sil":
             self.yeni_sifre2.clear()         
                    
     def windows(self):
         self.pencere2.close()
         self.pencere3=QWidget()
-        self.yeni_sifre=QLabel("Yeni Şifre")
+        self.back=QPushButton("<")
+        self.text=QLabel()
+        self.username=QLineEdit()
+        self.yeni_sifre=QLabel("New Password")
         self.yeni_sifre2=QLineEdit()
         self.yeni_sifre2.setEchoMode(QLineEdit.Password)
-        self.kaydet=QPushButton("Kaydet")
+        self.kaydet=QPushButton("Save")
+        self.kaydet.setShortcut("Ctrl+S")
         self.parola=self.yeni_sifre2
-        self.sil=QPushButton("Sil")
+        self.sil=QPushButton("Delete")
+        self.sil.setShortcut("Ctrl+D")
         v_box=QVBoxLayout()
         h_box=QHBoxLayout()
         v_box.addStretch()
+        v_box.addWidget(self.back)
+        v_box.addWidget(self.kullanıcı_adı)
+        v_box.addWidget(self.username)
         v_box.addWidget(self.yeni_sifre)
         v_box.addWidget(self.yeni_sifre2)
         v_box.addWidget(self.kaydet)
         v_box.addWidget(self.sil)
+        v_box.addWidget(self.text)
         v_box.addStretch()
         h_box.addStretch()
         h_box.addLayout(v_box)
         h_box.addStretch()
         self.pencere3.setLayout(h_box)
+        self.back.clicked.connect(self.giris2)
         self.kaydet.clicked.connect(self.check)
         self.sil.clicked.connect(self.check)
         self.pencere3.show()
-    def control(self):
-        self.ad=('ataberkkoroglu02@gmail.com')
-        self.parola="2606Atam"
+        if self.back.isChecked():
+            self.pencere3.close()
+            
+    def giris2(self):
+         
+         self.pencere3.close()
+         self.pencere2=QWidget()
+         self.text2=QLabel()
+         self.pencere2.setWindowTitle("Gmail")
+         self.kullanıcı_adı=QLabel("Your Username")
+         self.kullanıcı_sifresi=QLabel("Your Password")
+         self.remember=QCheckBox("Remember Me")
+         self.password=(QLineEdit())
+         self.password.setEchoMode(QLineEdit.Password)
+         self.kullanıcı_adı2=QLineEdit()
+         self.etiket2=QLabel()
+         self.etiket2.setPixmap(QtGui.QPixmap("Gmail2.jpg"))
+         self.buton4=QPushButton("Login")
+         self.buton4.setShortcut("Ctrl+M")
+         self_unutma=QPushButton("Did You Forget Your Password?")
+         v_box=QVBoxLayout()
+         h_box=QHBoxLayout()
+         v_box.addStretch()
+         v_box.addWidget(self.etiket2)
+         v_box.addWidget(self.kullanıcı_adı)
+         v_box.addWidget(self.kullanıcı_adı2)
+         v_box.addWidget(self.kullanıcı_sifresi)
+         v_box.addWidget(self.password)
+         v_box.addWidget(self.remember)
+         v_box.addWidget(self.buton4)
+         v_box.addWidget(self_unutma)
+         v_box.addWidget(self.text2)
+         v_box.addStretch()
+         h_box.addStretch()
+         h_box.addLayout(v_box)
+         h_box.addStretch()
+         self.pencere2.setLayout(h_box)
+         self.remember.clicked.connect(self.check)
+         self.buton4.clicked.connect(self.check)
+         self_unutma.clicked.connect(self.windows)
+         self.pencere2.show()
+        
+    def giris3(self):
+         self.pencere.close()
+         self.pencere2=QWidget()
+         self.text2=QLabel()
+         self.pencere2.setWindowTitle("Gmail")
+         self.kullanıcı_adı=QLabel("Your Username")
+         self.kullanıcı_sifresi=QLabel("Your Password")
+         self.remember=QCheckBox("Remember Me")
+         self.password=(QLineEdit())
+         self.password.setEchoMode(QLineEdit.Password)
+         self.kullanıcı_adı2=QLineEdit()
+         self.etiket2=QLabel()
+         self.etiket2.setPixmap(QtGui.QPixmap("Gmail2.jpg"))
+         self.buton4=QPushButton("Login")
+         self.buton4.setShortcut("Ctrl+M")
+         self_unutma=QPushButton("Did You Forget Your Password?")
+         v_box=QVBoxLayout()
+         h_box=QHBoxLayout()
+         v_box.addStretch()
+         v_box.addWidget(self.etiket2)
+         v_box.addWidget(self.kullanıcı_adı)
+         v_box.addWidget(self.kullanıcı_adı2)
+         v_box.addWidget(self.kullanıcı_sifresi)
+         v_box.addWidget(self.password)
+         v_box.addWidget(self.remember)
+         v_box.addWidget(self.buton4)
+         v_box.addWidget(self_unutma)
+         v_box.addWidget(self.text2)
+         v_box.addStretch()
+         h_box.addStretch()
+         h_box.addLayout(v_box)
+         h_box.addStretch()
+         self.pencere2.setLayout(h_box)
+         self.remember.clicked.connect(self.check)
+         self.buton4.clicked.connect(self.check)
+         self_unutma.clicked.connect(self.windows)
+         self.pencere2.show()
+         
     def response(self):
+        
         sender=self.pencere.sender()
-        if sender.text()=="Gönder":
+        if sender.text()=="Send":
+            con=sqlite3.connect("user.db")
+            cursor=con.cursor()
+            cursor.execute("Select Username From User Where Username=? ",(self.kullanıcı_adı2.text(),))
             mesaj=MIMEMultipart()
-            mesaj["From"]=self.kim
+            mesaj["From"]=cursor.fetchone()
             mesaj["to"]=self.kime
             mesaj["Subject"]=self.subject
             yazi=self.yazı_alanı.toPlainText()
@@ -167,36 +291,32 @@ class Pencere(QMainWindow):
              mail= smtplib.SMTP("stmp.gmail.com",587)
              mail.ehlo()
              mail.starttls()
-             mail.login(self.kullanıcı_adı2,self.password)
+             mail.login(self.kullanıcı_adı2.text(),self.password.text())
              mail.sendmail(mesaj["From"],mesaj["To"],mesaj["Subject"],mesaj.as_string())
-             self.yazı.setText("Mailiniz Başarıyla Gönderildi.")
+             self.yazı.setText("Your Mail was Sent Successfully.")
              mail.close()
             except:
-              self.yazı.setText("Mailiniz Gönderilemedi")
+              self.yazı.setText("Your Mail wasn't Sent Successfully.")
         elif sender.text()=="Taslak Olarak Kaydet":
-            dosya_ismi2= QFileDialog.getSaveFileName(self,"Dosya Kaydet",os.getenv("ataberk köroğlu"))
+            dosya_ismi2= QFileDialog.getSaveFileName(self,"Dosya Kaydet",os.getenv("Desktop"))
             with open(dosya_ismi2[0],"w") as file2:
-                file2.write("Gönderici:\t")
-                file2.write(self.kim.text())
-                file2.write("\n")
-                file2.write("Alıcı:\t")
+                file2.write("Receiver:\t")
                 file2.write(self.kime.text())
                 file2.write("\n")
-                file2.write("Konu:\t")
+                file2.write("Subject:\t")
                 file2.write(self.subject.text())
                 file2.write("\n")
-                file2.write("Yazı:\t")
+                file2.write("Essay:\t")
                 file2.write(self.yazı_alanı.toPlainText())
                 file2.close()
-        elif sender.text()=="Sil":
+        elif sender.text()=="Delete":
             self.yazı_alanı.clear()
             self.subject.clear()
             self.kime.clear()
             self.kim.clear()
-        elif sender.text()=="Aç":
-            dosya_ismi= QFileDialog.getOpenFileName(self,"Dosya Aç",os.getenv("ataberk köroğlu"))
+        elif sender.text()=="Open":
+            dosya_ismi= QFileDialog.getOpenFileName(self,"Open File",os.getenv("Desktop"))
             with open(dosya_ismi[0],"r+") as file:
-               self.kim.setText(file.readline())
                self.kime.setText(file.readline())
                self.subject.setText(file.readline())
                self.yazı_alanı.setText(file.readline())
