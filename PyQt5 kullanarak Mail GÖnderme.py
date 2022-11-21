@@ -298,7 +298,7 @@ class Pencere(QMainWindow):
             except:
               self.yazı.setText("Your Mail wasn't Sent Successfully.")
         elif sender.text()=="Taslak Olarak Kaydet":
-            dosya_ismi2= QFileDialog.getSaveFileName(self,"Dosya Kaydet",os.getenv("Desktop"))
+            dosya_ismi2= QFileDialog.getSaveFileName(self,"Save File",os.getenv("Desktop"))
             with open(dosya_ismi2[0],"w") as file2:
                 file2.write("Receiver:\t")
                 file2.write(self.kime.text())
