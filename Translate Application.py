@@ -1,15 +1,34 @@
 from PyQt5.QtWidgets import QComboBox,QPushButton,QApplication,QLabel,QVBoxLayout,QHBoxLayout,QMainWindow,QWidget,QTextEdit
 from PyQt5.QtGui import QFont,QIcon
-import sys,time,os,deep_translator
+import sys,time,os,deep_translator,sqlite3
 from datetime import datetime
+from gtts import gTTS
 
 os.chdir("C:/Users/asus/Desktop/Sample Picture")
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.sql()
+        
         self.program2()
 
-        
+    def sql(self):
+         con=sqlite3.connect("Translate.db")
+         cursor=con.cursor()
+         try:
+           cursor.execute("Create Table translate(english INT,turkish INT,french INT,spanish INT,arabic INT,german INT,italian INT,greek INT,russian INT,japanese INT,korean INT,chinese INT)")
+           con.commit()
+           cursor.execute("Insert Into translate values(?,?,?,?,?,?,?,?,?,?,?,?)",(0,0,0,0,0,0,0,0,0,0,0,0))
+           con.commit()   
+           cursor.execute("Select * From translate")
+           self.count=cursor.fetchone()
+         
+         except:
+            cursor.execute("Select * From translate")
+            self.count=cursor.fetchone()
+          
+ 
+            
     def program2(self):
         
         self.pencere=QWidget()
@@ -96,10 +115,48 @@ class Window(QMainWindow):
     
             self.Text2.setText(sample)
             #self.Text2.setText("Your Process Couldn't Complete Successfully.")
+            
             if self.Text2.toPlainText()!='':
+                b=0
+                d=0
+                a=self.Language2.currentText()
+                c=self.Language1.currentText()
+                language1={"english":'en',"turkish":'tr',"french":'fr',"spanish":"es","arabic":"ar","german":"de","italian":"it","greek":"el","russian":"ru","japanese":"ja","korean":"ko","chinese (traditional)":"zh-cht"}
+                for i,e in language1.items():
+                    if a==i:
+                        break
+                    else:
+                        b +=1
+                for k,j in language1.items():
+                    if c==k:
+                        break
+                    else:
+                        d +=1
+                    
+                con=sqlite3.connect("Translate.db")
+                cursor=con.cursor()
+                cursor.execute("Select * From translate")
+                self.count=cursor.fetchone()
+               
+                audio2=f'Original Text {c}{self.count[b]}.mp3'
+                audio=f'translated Text {a}{self.count[b]}.mp3'
+            
+                cursor.execute(f"Update translate set {a}=? Where {a}=?",(self.count[b]+1,self.count[b]))
+                con.commit()                    
+                language=self.Language2.currentText()
+                language2=self.Language1.currentText()
+                
+                if language in language1.keys():
+                    sp=gTTS(text=self.Text2.toPlainText(),lang=language1[language],slow=False)
+                    sp.save(audio)
+                if language2 in language1.keys():
+                    sp2=gTTS(text=self.Text1.toPlainText(),lang=language1[language2],slow=False)
+                    sp2.save(audio2)
+                
                 self.line.setText("Process Time: {}".format(time.process_time()))
             else:
                 self.line.setText("Process Time: 0")
+                
         elif sender.text()=="Clear":
             self.choice=self.Language1.currentText()
             self.Language1.setCurrentText(str(self.Language2.currentText()))
@@ -118,6 +175,7 @@ class Window(QMainWindow):
             self.choice=self.Language1.currentText()
             self.Language1.setCurrentText(str(self.Language2.currentText()))
             self.Language2.setCurrentText(str(self.choice))
+            self.line.setText("Process Time: {}".format(time.process_time()))
         
         
 
