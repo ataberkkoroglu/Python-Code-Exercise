@@ -55,14 +55,13 @@ class Window(QMainWindow):
     def browser(self):
         sender=self.pencere.sender()
         if sender.text()=="Search":
-            """chrome=webbrowser.Chrome("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")
-            chrome.open_new_tab(str(self.Text.text()))
-            self.Text.clear()"""
+            
             query=self.Text.text()
             self.a=list()
             for j in googlesearch.search(query, tld="co.in", num=100, stop=100, pause=2):
               self.a.append(j)
               self.program2()
+              
         elif sender.text()=="Clear":
             self.Text.clear()
     
