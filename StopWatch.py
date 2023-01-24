@@ -2,7 +2,7 @@ from tkinter import Tk,Label,Button
 import time
 app=Tk()
 app.title('StopWatch')
-
+app.config(background='Black')
 Ms=0
 Second=0
 Minute=0
@@ -18,7 +18,7 @@ def StopWatch():
         Minute +=1
     kr=f"{Minute}:{Second}.{Ms}"
     a.config(text=str(kr))
-    app.after(60,StopWatch)
+    app.after(45,StopWatch)
    
 def StopWatch2():
     global Ms,Minute,Second
@@ -27,7 +27,7 @@ def StopWatch2():
     Second=0
     a.config(text=f"{Minute}:{Second}.{Ms}")
     app.after(1,StopWatch2) 
-  
+    
 
 def StopWatch3():
     global Minute,Second,Ms
@@ -51,6 +51,7 @@ a.grid(row=1,column=1)
 start.grid(row=2,column=2)
 reset.grid(row=3,column=2)
 finish.grid(row=4,column=2)
+
 app.maxsize(410,335)
 
 app.mainloop()
