@@ -1,6 +1,6 @@
 import cv2,sys,random
 from pyzbar.pyzbar import decode
-from PyQt5.QtWidgets import QWidget,QApplication,QLabel,QVBoxLayout,QPushButton
+from PyQt5.QtWidgets import QWidget,QApplication,QLabel,QVBoxLayout
 from PyQt5.QtGui import QFont
 from datetime import datetime
 
@@ -15,15 +15,15 @@ def Program():
     date.setText(str(datetime.strftime(datetime.now(),"Date: %d / %m / %Y  Hour: %H : %M : %S")))
     date.setFont(QFont('Arial',24,QFont.Normal,True))
     text.setFont(QFont('Arial',48,QFont.Bold))
-    text.setText(f"Product is {str(round(random.randint(0,1000)+random.random()))} Dolar")
+    text.setText(f"Product is {str(random.randint(0,1000)+float(random.randrange(0,1,100)))} Dolar")
     v_box=QVBoxLayout()
-    button=QPushButton("Devam")
     v_box.addStretch()
     v_box.addWidget(date)
     v_box.addSpacing(50)
     v_box.addWidget(text)
-    pencere.setLayout(v_box)
     v_box.addStretch()
+    pencere.setLayout(v_box)
+    
     pencere.show()
     sys.exit(app.exec())
    
