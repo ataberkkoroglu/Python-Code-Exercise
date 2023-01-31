@@ -41,7 +41,8 @@ counter=0
 while 1:
     ret,frame=cap.read()
     Barcode=decode(frame)
-    for barcode in Barcode:
+    if Barcode!=None:
+     for barcode in Barcode:
         (x,y,h,z)=barcode.rect
         cv2.rectangle(frame,(x,y),(x+h,y+z),(100,255,100),2)
         Program()
