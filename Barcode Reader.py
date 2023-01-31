@@ -1,7 +1,7 @@
 import cv2,sys,random
 from pyzbar.pyzbar import decode
-from PyQt5.QtWidgets import QWidget,QApplication,QLabel,QVBoxLayout
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QWidget,QApplication,QLabel,QVBoxLayout,QHBoxLayout
+from PyQt5.QtGui import QFont,QPixmap
 from datetime import datetime
 
 cap=cv2.VideoCapture(0)
@@ -12,17 +12,27 @@ def Program():
     text=QLabel()
     pencere.setWindowTitle("Barcode Reader")
     date=QLabel()
+    img=QLabel()
+    
     date.setText(str(datetime.strftime(datetime.now(),"Date: %d / %m / %Y  Hour: %H : %M : %S")))
-    date.setFont(QFont('Arial',24,QFont.Normal,True))
+    date.setFont(QFont('Arial',32,QFont.Normal,True))
     text.setFont(QFont('Arial',48,QFont.Bold))
+    img.setPixmap(QPixmap("C:\\Users\\asus\\Desktop\\Sample Picture\\Market.jpg")) #Sample Image of Product
     text.setText(f"Product is {str(random.randint(0,1000)+float(random.randrange(0,1,100)))} Dolar")
+    
     v_box=QVBoxLayout()
+    h_box=QHBoxLayout()
     v_box.addStretch()
     v_box.addWidget(date)
     v_box.addSpacing(50)
+    v_box.addWidget(img)
+    v_box.addSpacing(50)
     v_box.addWidget(text)
     v_box.addStretch()
-    pencere.setLayout(v_box)
+    h_box.addStretch()
+    h_box.addLayout(v_box)
+    h_box.addStretch()
+    pencere.setLayout(h_box)
     
     pencere.show()
     sys.exit(app.exec())
