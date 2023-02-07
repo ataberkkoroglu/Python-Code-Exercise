@@ -35,7 +35,7 @@ def Currency():
  
 
 app=Tk()
-app.title("Currency")
+app.title("Live Currency")
 app.geometry("640x480")
 app.resizable(1,1)
 app.config(background="Black")
