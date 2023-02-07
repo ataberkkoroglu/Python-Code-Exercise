@@ -19,12 +19,6 @@ def Currency():
  currency.append(soup.find("span",{"class":"value eur-usd-ask"}).text) #DOLAR-EUR Satış: 
  currency.append(soup2.find("span",{"data-socket-key":"GBP","data-socket-attr":"bid"}).text.strip().replace("\n","")) #STERLIN-TL Alış: 
  currency.append(soup2.find("span",{"data-socket-key":"GBP","data-socket-attr":"ask"}).text.strip().replace("\n","")) #STERLIN-TL Satış: """
- 
- 
- for i in currency:
-    i=str(i)
-    i.strip()
-    i.replace("\n","")
     
  x=["DOLAR-TL Alış: ","DOLAR-TL Satış: ","EURO-TL Alış: ","EURO-TL Satış: ","DOLAR-EURO Alış: ","DOLAR-EURO Satış","STERLIN-TL Alış: ","STERLIN-TL Satış: "]
 
