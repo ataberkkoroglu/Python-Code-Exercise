@@ -87,7 +87,10 @@ while 1:
         
         elif ch=='N' or ch=='n':
             data=pd.read_sql_table("staff",create_engine("sqlite:///Staff.db").connect())
-            data.to_excel("Staff.xlsx","Employees' Informations")
+            data2=pd.DataFrame(data)
+            print(data2)
+            data2.set_index("Person",inplace=True)
+            data2.to_excel("Staff.xlsx","Employees' Informations")
             print("Have a Good Days...")
             sys.exit()
             
