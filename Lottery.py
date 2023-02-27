@@ -1,6 +1,6 @@
 from tkinter import Label,Tk,Button,PhotoImage
 import random,time,os
-from PIL import Image,ImageTk
+
 os.chdir('C:/Users/asus/Desktop')
 app=Tk()
 app.geometry('640x480')
