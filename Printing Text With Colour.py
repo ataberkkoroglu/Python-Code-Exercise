@@ -1,7 +1,7 @@
 from colorama import ansi
 import time,sys
 from datetime  import datetime
-
+print(ansi.Style.BRIGHT)
 print("Welcome To Program...",datetime.strftime(datetime.now(),"%H : %M : %S  %d.%m.%Y"),sep='\n')
 while(1):
   text=input("Write a Text: ")
@@ -23,6 +23,7 @@ while(1):
         break
     elif(colour==4):
         print(ansi.Fore.MAGENTA,text)
+        
         print(ansi.Fore.RESET)
         break
     elif (colour==5):
@@ -56,5 +57,6 @@ while(1):
         elif ch=='N' or ch=='n':
             print("Have a Good Days...\n"+datetime.strftime(datetime.now(),"%H : %M : %S %d.%m.%Y"))
             sys.exit()
+            
         else:
             print("Wrong Character...\nPlease Write Again...")
