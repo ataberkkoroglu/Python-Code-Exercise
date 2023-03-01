@@ -1,4 +1,4 @@
-from tkinter import Entry,Button,Label,Tk
+from tkinter import Entry,Button,Label,Tk,PhotoImage
 import pywhatkit,pyautogui as py
 from datetime import datetime
 
@@ -11,6 +11,8 @@ app.config(background="Black")
 app.resizable(1,1)
 app.geometry("640x480")
 app.title("Message")
+
+app.iconphoto(True,PhotoImage(file="C:/Users/asus/Desktop/Sample Picture/message.jpeg"))
 text2=Label(app,text="Write Number With Country Code",font=("Arial",24,'bold'),foreground="white",background="black")
 text2.grid(row=3,column=10)
 text=Label(app,text="Write Text",font=("Arial",24,"bold"),foreground="white",background="black")

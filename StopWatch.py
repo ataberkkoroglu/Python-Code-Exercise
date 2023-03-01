@@ -1,4 +1,4 @@
-from tkinter import Tk,Label,Button
+from tkinter import Tk,Label,Button,PhotoImage
 import time
 app=Tk()
 app.title('StopWatch')
@@ -6,6 +6,7 @@ app.config(background='Black')
 Ms=0
 Second=0
 Minute=0
+app.iconphoto(True,PhotoImage(file="C:/Users/asus/Desktop/Sample Picture/Clock.png"))
 
 def StopWatch():
     global kr,Second,Minute,Ms
