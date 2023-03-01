@@ -1,7 +1,8 @@
 from datetime import datetime
 import sys
 import os 
-from PyQt5.QtWidgets import QMainWindow,QTextEdit,QAction,QVBoxLayout,qApp,QApplication,QWidget,QFileDialog,QLabel,QHBoxLayout
+from PyQt5.QtWidgets import QMainWindow,QTextEdit,QAction,QVBoxLayout,qApp,QApplication,QWidget,QFileDialog,QLabel,QHBoxLayout,QColorDialog
+from PyQt5.QtGui import QIcon,QColor,QFont,QPixmap
 import time
 class pencere (QMainWindow):
     def __init__(self):
@@ -16,8 +17,12 @@ class pencere (QMainWindow):
       self.yazı_alanı=QTextEdit()
       self.now=datetime.now()
       self.cıkıs=menubar.addMenu("Exit")
-      self.time=QLabel(str(datetime.strftime(self.now,format("%d-%m-%Y/ %H.%M.%S"))))
+      self.time=QLabel(str(datetime.strftime(self.now,format(" %H : %M : %S  %d.%m.%Y"))))
       self.alt=QLabel("       %100        |  Windows(CRLF)  | UTF-8 ")
+      self.time.setFont(QFont("Arial",11,6))
+      self.alt.setFont(QFont("Arial",11,6))
+      
+      self.yazı_alanı.setTextColor(QColor(255,100,200))
       self.v_box=QVBoxLayout()
       self.h_box=QHBoxLayout()
       self.v_box.addWidget(self.yazı_alanı)
@@ -58,6 +63,7 @@ class pencere (QMainWindow):
             dosya_ismi2= QFileDialog.getSaveFileName(self,"Dosya Kaydet",os.getenv("asus"))
             with open(dosya_ismi2[0],"w") as file2:
                 file2.write(self.yazı_alanı.toPlainText())
+                
         elif action.text()=="Delete":
             self.yazı_alanı.clear()
         elif action.text()=="Exit":
@@ -71,5 +77,6 @@ class pencere (QMainWindow):
             time.sleep(5)
             print("Your Essay was Printed.")
 app=QApplication(sys.argv)
+app.setWindowIcon(QIcon(QPixmap("C:\\Users\\asus\\Desktop\\Sample Picture\\Notepad.png")))
 Pencere=pencere()
 sys.exit(app.exec())
