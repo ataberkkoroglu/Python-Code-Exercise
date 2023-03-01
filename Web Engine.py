@@ -18,7 +18,7 @@ class window:
      self.buton.setFont(QtGui.QFont("Arial",20,4))
      self.text_field.setStyleSheet("background :White")
      self.buton.setStyleSheet("background: green")
-     self.buton.setShortcut("Ctrl+Return")
+     self.buton.setShortcut("Return")
      v_box=QtWidgets.QVBoxLayout()
      v_box.addStretch()
      v_box.addWidget(self.text)
