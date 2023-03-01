@@ -8,6 +8,7 @@ def pencere():
     window .setWindowTitle("Ataberk")
     
     Buton=QtWidgets.QPushButton("Okey")
+    Buton.setShortcut("Return")
     Buton2=QtWidgets.QPushButton("Cancel")
     h_box=QtWidgets.QHBoxLayout()
     h_box.addStretch() 

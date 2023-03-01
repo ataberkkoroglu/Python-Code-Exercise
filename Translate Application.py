@@ -58,7 +58,7 @@ class Window(QMainWindow):
         self.translated=QLabel("Translated Text:")
         self.translated.setFont(QFont("Arial",11,weight=QFont.Bold,italic=False))
         self.buton=QPushButton("Translate")
-        
+        self.buton.setShortcut("Return")
         self.v_box=QVBoxLayout()
         self.h_box=QHBoxLayout()
         self.h_box2=QHBoxLayout()

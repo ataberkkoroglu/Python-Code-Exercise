@@ -22,8 +22,9 @@ class Window():
         self.alan.setFont(QtGui.QFont("Arial Font",20))
         self.yazı=QtWidgets.QLabel("Paranızın Birimi:")
         self.yazı2=QtWidgets.QLabel("Çevrileceği Para Birimi:")
-        self.yazı3=QtWidgets.QLabel("Miktar:")
+        
         self.buton=QtWidgets.QPushButton("Hesapla")
+        self.buton.setShortcut("Return")
         self.alan3=QtWidgets.QLineEdit()
         self.alan4=QtWidgets.QLabel("")
         self.alan4.setFont(QtGui.QFont("Arial Font",20))
@@ -143,7 +144,7 @@ class Window():
             self.alan4.clear()
             self.alan5.clear()
             self.alan2.setText(str(datetime.ctime(datetime.now())))
-            self.alan.setText(Kur8.text)
+            self.alan.setText(str(Kur8.text))
         elif birim=="DOLAR" and birim2=="STERLIN":
             self.alan4.clear()
             self.alan5.clear()

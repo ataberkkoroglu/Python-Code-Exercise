@@ -20,8 +20,9 @@ class Window(QMainWindow):
         self.search=QPushButton("Search")
         self.search.setFont(QFont('Arial',20,weight=3))
         self.search.setStyleSheet("Background:green")
-        
+        self.search.setShortcut("Return")
         self.clear=QPushButton("Clear")
+        self.clear.setShortcut("Ctrl+D")
         self.clear.setFont(QFont('Arial',20,weight=3))
         self.clear.setStyleSheet("Background:red")
         self.Image=QLabel()
@@ -81,6 +82,7 @@ class Window(QMainWindow):
         self.back.setStyleSheet("Background: Red")
         self.go=QPushButton("Enter")
         self.go.setStyleSheet("Background:Green")
+        self.go.setShortcut("Return")
         self.go.setMaximumHeight(50)
         v_box=QVBoxLayout()
         h_box3=QHBoxLayout()

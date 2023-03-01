@@ -1,20 +1,19 @@
 from PyQt5 import QtWidgets,QtGui
-import sys,sqlite3,time,webbrowser
+import sys,sqlite3,time,webbrowser,instaloader
 class pencere():
     def __init__(self):
      super().__init__()
+     
      self.init_ui()
      self.baglantı_olustur()
+     
     def baglantı_olustur(self):
       con=sqlite3.connect("information.db")
       cursor=con.cursor()
       cursor.execute("Create Table IF NOT Exists Member(Username TEXT,Password TEXT) ")
       con.commit()
-      cursor.execute("Select * From Member")
-      result=cursor.fetchall()
-      if result==None:
-       cursor.execute("Insert Into Member Values(?,?) ",("ataberkkoroglu","12345"))
-       con.commit()
+    
+ 
     def init_ui(self):
       self.window=QtWidgets.QWidget()
       self.window.setWindowTitle("Instagram")
@@ -27,7 +26,7 @@ class pencere():
       self.kullanici_sifresi.setEchoMode(QtWidgets.QLineEdit.Password)
       self.sifre_unutma=QtWidgets.QPushButton("Did You Forget Your Password?If Your Answer is Yes, Click here")
       self.login=QtWidgets.QPushButton("Login")
-      self.login.setShortcut("Ctrl+Enter")
+      self.login.setShortcut("Return")
       self.v_box=QtWidgets.QVBoxLayout()
       self.yazi=QtWidgets.QLabel(self.window)
       self.v_box.addStretch()
@@ -81,8 +80,10 @@ class pencere():
          self.v_box3.addStretch()
          self.window.close()
          self.window2.show()
-         time.sleep(2)
-         webbrowser.open("https://www.instagram.com/",2)
+         
+         webbrowser.Chrome("C:/Program Files/Google/Chrome/Application/chrome.exe")
+         webbrowser.open_new_tab("https://www.instagram.com/")
+        
          self.window2.close()
       else:
         self.window.close()
@@ -100,6 +101,7 @@ class pencere():
          self.yeni_sifre=QtWidgets.QLineEdit()
          self.yeni_sifre.setEchoMode(QtWidgets.QLineEdit.Password)
          self.buton=QtWidgets.QPushButton("Save Changes")
+         self.buton.setShortcut("Return")
          self.v_box2=QtWidgets.QVBoxLayout()
          self.v_box2.addStretch()
          self.v_box2.addWidget(self.image)
@@ -121,6 +123,7 @@ class pencere():
          self.yeni_sifre=QtWidgets.QLineEdit()
          self.yeni_sifre.setEchoMode(QtWidgets.QLineEdit.Password)
          self.buton=QtWidgets.QPushButton("Save Changes")
+         self.buton.setShortcut("Return")
          self.v_box2=QtWidgets.QVBoxLayout()
          self.v_box2.addWidget(self.yazı3)
          self.v_box2.addWidget(self.yazı4)
