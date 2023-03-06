@@ -34,7 +34,7 @@ class Window:
         self.Student.setStyleSheet(" color: white")
         self.Grade=QtWidgets.QLineEdit()
         self.Grade.setFont(QtGui.QFont('Arial',18,4))
-        self.Grade.setStyleSheet(" color: white")
+        self.Grade.setStyleSheet(" color: white; alpha=4")
         self.buton=QtWidgets.QPushButton("Add to Your List")
         self.buton.setFont(QtGui.QFont('Arial',18,4))
         self.buton.setStyleSheet("background: green")
@@ -102,43 +102,105 @@ class Window:
         
         sender=self.main_window.sender()
         
-        if sender.text()=="Add to Your List":
-           self.csv()
+        if sender.text()=="Add to Your List" and self.Student.text()!="" and self.Lesson.text()!="" and self.Grade.text()!="":
+           conclusion=self.csv()
+           if conclusion==True:
            
-           self.window2=QtWidgets.QWidget()
-           self.window2.setStyleSheet("background : black")
-           self.img2=QtWidgets.QLabel()
+            self.window2=QtWidgets.QWidget()
+            self.window2.setStyleSheet("background : black")
+            self.img2=QtWidgets.QLabel()
            
-           self.img2.setPixmap(QtGui.QPixmap("C:\\Users\\asus\\Desktop\\Sample Picture\\tik.jpg"))
-           self.img2.setStyleSheet("color: black")
-           self.text=QtWidgets.QLabel("Your Process Could Be Successfully.")
-           self.text.setStyleSheet("Color: white")
-           self.text.setFont(QtGui.QFont("Arial",36,10))
+            self.img2.setPixmap(QtGui.QPixmap("C:\\Users\\asus\\Desktop\\Sample Picture\\tik.jpg"))
+            self.img2.setStyleSheet("color: black")
+            self.text=QtWidgets.QLabel("Your Process Could Be Successfully.")
+            self.text.setStyleSheet("Color: white")
+            self.text.setFont(QtGui.QFont("Arial",36,10))
            
-           v_box=QtWidgets.QVBoxLayout()
-           h_box=QtWidgets.QHBoxLayout()
-           h_box1=QtWidgets.QHBoxLayout()
+            v_box=QtWidgets.QVBoxLayout()
+            h_box=QtWidgets.QHBoxLayout()
+            h_box1=QtWidgets.QHBoxLayout()
            
-           h_box.addStretch()
-           h_box.addWidget(self.img2)
-           h_box.addStretch()
+            h_box.addStretch()
+            h_box.addWidget(self.img2)
+            h_box.addStretch()
            
-           h_box1.addStretch()
-           h_box1.addWidget(self.text)
-           h_box1.addStretch()
+            h_box1.addStretch()
+            h_box1.addWidget(self.text)
+            h_box1.addStretch()
            
-           v_box.addStretch()
-           v_box.addLayout(h_box)
-           v_box.addSpacing(100)
-           v_box.addLayout(h_box1)
-           v_box.addStretch()
-           self.window2.setLayout(v_box)
-           self.window2.show()
+            v_box.addStretch()
+            v_box.addLayout(h_box)
+            v_box.addSpacing(100)
+            v_box.addLayout(h_box1)
+            v_box.addStretch()
+            self.window2.setLayout(v_box)
+            self.window2.show()
+           else:
+            self.window2=QtWidgets.QWidget()
+            self.window2.setStyleSheet("background : black")
+            self.img2=QtWidgets.QLabel()
            
-        else:
+            self.img2.setPixmap(QtGui.QPixmap("C:\\Users\\asus\\Desktop\\Sample Picture\\forbidden.png"))
+            self.img2.setStyleSheet("color: black")
+            self.text=QtWidgets.QLabel("Your Process Couldn't Be Successfully.")
+            self.text.setStyleSheet("Color: white")
+            self.text.setFont(QtGui.QFont("Arial",36,10))
+           
+            v_box=QtWidgets.QVBoxLayout()
+            h_box=QtWidgets.QHBoxLayout()
+            h_box1=QtWidgets.QHBoxLayout()
+           
+            h_box.addStretch()
+            h_box.addWidget(self.img2)
+            h_box.addStretch()
+           
+            h_box1.addStretch()
+            h_box1.addWidget(self.text)
+            h_box1.addStretch()
+           
+            v_box.addStretch()
+            v_box.addLayout(h_box)
+            v_box.addSpacing(100)
+            v_box.addLayout(h_box1)
+            v_box.addStretch()
+            self.window2.setLayout(v_box)
+            self.window2.show()
+            
+        elif sender.text()=="Delete" and self.Student.text()!="" and self.Lesson.text()!="" and self.Grade.text()!="":
             self.Lesson.clear()
             self.Student.clear()
             self.Grade.clear()
+            
+        else:
+            self.window2=QtWidgets.QWidget()
+            self.window2.setStyleSheet("background : black")
+            self.img2=QtWidgets.QLabel()
+           
+            self.img2.setPixmap(QtGui.QPixmap("C:\\Users\\asus\\Desktop\\Sample Picture\\forbidden.png"))
+            self.img2.setStyleSheet("color: black")
+            self.text=QtWidgets.QLabel("Your Process Couldn't Be Successfully.")
+            self.text.setStyleSheet("Color: white")
+            self.text.setFont(QtGui.QFont("Arial",36,10))
+           
+            v_box=QtWidgets.QVBoxLayout()
+            h_box=QtWidgets.QHBoxLayout()
+            h_box1=QtWidgets.QHBoxLayout()
+           
+            h_box.addStretch()
+            h_box.addWidget(self.img2)
+            h_box.addStretch()
+           
+            h_box1.addStretch()
+            h_box1.addWidget(self.text)
+            h_box1.addStretch()
+           
+            v_box.addStretch()
+            v_box.addLayout(h_box)
+            v_box.addSpacing(100)
+            v_box.addLayout(h_box1)
+            v_box.addStretch()
+            self.window2.setLayout(v_box)
+            self.window2.show()
             
     def csv(self):
         
@@ -148,11 +210,18 @@ class Window:
         con.commit()
         cursor.execute("Insert Into student Values (?,?,?)",(self.Lesson.text(),self.Student.text(),int(self.Grade.text())))
         con.commit()
-        con.close()
-        con=create_engine('sqlite:///Student.db').connect()
-        data=pd.read_sql_table("student",con)
+        cursor.execute("Select * From student Where Lesson=? and STUDENT=? and GRADE=? ",(self.Lesson.text(),self.Student.text(),int(self.Grade.text())))
+        result=cursor.fetchone()
         
-        data.to_csv("Student.csv",index=False)
+        if result!=None:
+          con.close()
+          con=create_engine('sqlite:///Student.db').connect()
+          data=pd.read_sql_table("student",con)
+          
+          data.to_csv(f"Student.csv",index=False)
+          return True
+        else:
+            return False
         
         
     
