@@ -1,10 +1,11 @@
 from PyQt5.QtWidgets import QComboBox,QPushButton,QApplication,QLabel,QVBoxLayout,QHBoxLayout,QMainWindow,QWidget,QTextEdit
 from PyQt5.QtGui import QFont,QIcon
-import sys,time,os,deep_translator,sqlite3
+import sys,time,os,deep_translator,sqlite3,playsound
 from datetime import datetime
 from gtts import gTTS
 
 os.chdir("C:/Users/asus/Desktop/Sample Picture")
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -148,11 +149,16 @@ class Window(QMainWindow):
                 
                 if language in language1.keys():
                     sp=gTTS(text=self.Text2.toPlainText(),lang=language1[language],slow=False)
+                    
                     sp.save(audio)
+                    playsound.playsound(f"{os.getcwd()}\\{audio}")
+                    os.remove(f"{os.getcwd()}\\{audio}")
                 if language2 in language1.keys():
                     sp2=gTTS(text=self.Text1.toPlainText(),lang=language1[language2],slow=False)
+                    
                     sp2.save(audio2)
-                
+                    playsound.playsound(f"{os.getcwd()}\\{audio2}")
+                    os.remove(f"{os.getcwd()}\\{audio2}")
                 self.line.setText("Process Time: {}".format(time.process_time()))
             else:
                 self.line.setText("Process Time: 0")
