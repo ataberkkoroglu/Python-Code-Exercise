@@ -8,7 +8,7 @@ print(colorama.ansi.Fore.LIGHTWHITE_EX+"Welcome To Program.. \n"+datetime.strfti
 fs=44_100 #Sample Rate
 while(1):
  second=float(input("\033[1mEnter the time Duration in second: ")) #Enter your required time
- name=input("\033[1mWhat is Name Of Voice File : ")
+ name=input("\033[1mWhat Will Be Name Of Voice File : ")
  print(colorama.ansi.Fore.LIGHTRED_EX,fontstyle.apply("Recording...\n","BOLD/UNDERLINE"))
  record_voice=sounddevice.rec(int(second*fs),fs,channels=2)
  sounddevice.wait()
