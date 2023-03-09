@@ -4,6 +4,7 @@ from playsound import playsound
 import colorama,fontstyle
 from datetime import datetime
 
+print(colorama.ansi.Fore.LIGHTWHITE_EX+"Welcome To Program.. \n"+datetime.strftime(datetime.now(),"%H : %M : %S  %d.%m.%Y\n"))
 fs=44_100 #Sample Rate
 while(1):
  second=float(input("\033[1mEnter the time Duration in second: ")) #Enter your required time
