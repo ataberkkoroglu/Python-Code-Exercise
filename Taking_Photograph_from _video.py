@@ -1,4 +1,4 @@
-import sqlite3,cv2,os
+import sqlite3,cv2
 from datetime import datetime
 class Face:
    def __init__(self):
@@ -10,7 +10,10 @@ class Face:
      return con,cursor
      
    def Data(self):
-       self.SQL2()
+       con,cursor=self.Main_SQL()
+       cursor.execute("Select * From face")
+       count=len(cursor.fetchall())
+       return count
     
       
    def SQL2(self):
@@ -19,9 +22,9 @@ class Face:
        con.commit()
        
    def SQL3(self):
-       with open("FootAge.png",'rb') as file:
+       with open(f"FootAge_{self.Data()}.png",'rb') as file:
            data=file.read()
-       os.remove("FootAge.png")
+       
        con,cursor=self.Main_SQL()
        cursor.execute("Select * From face")
        count=len(cursor.fetchall())
@@ -30,9 +33,9 @@ class Face:
        con.close()
        
        
-       
+   
    def main(self):
-       self.Data()
+       self.SQL2()
        cap=cv2.VideoCapture(0)
        cascade=cv2.CascadeClassifier("C:\\Users\\asus\\Desktop\\Workshop-1_Proje\\opencv\\build\\etc\\haarcascades\\haarcascade_frontalface_default.xml")
        
@@ -42,10 +45,9 @@ class Face:
       
        while 1:
            ret,frame=cap.read()
-           multi=cascade.detectMultiScale(frame,minSize=(20,20))
-               
+           multi=cascade.detectMultiScale(frame,minSize=(20,20))            
            for Multi in multi:
-                cv2.imwrite("FootAge.png",frame)
+                cv2.imwrite(f"FootAge_{self.Data()}.png",frame)
                 self.SQL3() 
            cv2.imshow("Camera",frame)
             
