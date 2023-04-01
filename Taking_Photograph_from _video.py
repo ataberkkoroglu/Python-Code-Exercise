@@ -45,8 +45,9 @@ class Face:
       
        while 1:
            ret,frame=cap.read()
-           multi=cascade.detectMultiScale(frame,minSize=(20,20))            
-           for Multi in multi:
+           multi=cascade.detectMultiScale(frame,minSize=(20,20))
+           if cv2.waitKey(1) & 0xFF==13:         #Press Enter Key   
+            for Multi in multi:
                 cv2.imwrite(f"FootAge_{self.Data()}.png",frame)
                 self.SQL3() 
            cv2.imshow("Camera",frame)
