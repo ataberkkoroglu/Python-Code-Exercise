@@ -38,23 +38,24 @@ class Face:
        self.SQL2()
        cap=cv2.VideoCapture(0)
        cascade=cv2.CascadeClassifier("C:\\Users\\asus\\Desktop\\Workshop-1_Proje\\opencv\\build\\etc\\haarcascades\\haarcascade_frontalface_default.xml")
-       
+       cv2.namedWindow("Camera",cv2.WINDOW_NORMAL)
        codec=cv2.VideoWriter_fourcc('m','p','4','v')
 
        Video=cv2.VideoWriter("Camera.mp4",codec,30,(640,480))
-      
+       ch=None
        while 1:
            ret,frame=cap.read()
            multi=cascade.detectMultiScale(frame,minSize=(20,20))
-           if cv2.waitKey(1) & 0xFF==13:         #Press Enter Key   
+           
+           if cv2.waitKey(1) & 0xFF==13: #Press Enter Key  For Taking Photo
             for Multi in multi:
                 cv2.imwrite(f"FootAge_{self.Data()}.png",frame)
                 self.SQL3() 
-           cv2.imshow("Camera",frame)
-            
-           Video.write(frame)
-           if cv2.waitKey(1) & 0xFF==ord('q'):
+           elif cv2.waitKey(1) & 0xFF==('q'):
                break
+           
+           cv2.imshow("Camera",frame)
+           
        cap.release()
        cv2.destroyAllWindows()
          
