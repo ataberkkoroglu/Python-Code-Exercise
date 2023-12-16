@@ -1,8 +1,12 @@
-import instaloader
+import instaloader,time
 ig=instaloader.Instaloader()
-ig.login("username","password")
+
+username=input("Write Your Instagram Username : ")
+password=input("Write Your Instagram Password : ")
+ig.login(username,password)
+
 dp=input("Enter Insta username: ")
-ig.download_profile(dp,download_stories_only=True)
+ig.download_profile(dp,profile_pic=True,download_tagged=True,download_stories=True)
 
 
 """Hashtag=instaloader.Hashtag()
